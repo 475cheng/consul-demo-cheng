@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: consul-consumer
+  cloud:
+    consul:
+      host: 192.168.87.208
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+        health-check-path: /health
+        health-check-interval: 10s
+
+server:
+  port: 8503
+
+management:
+  security:
+    enabled: false

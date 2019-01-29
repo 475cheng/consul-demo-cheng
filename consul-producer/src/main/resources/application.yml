@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: consul-producer
+  cloud:
+    consul:
+      host: 172.20.4.98
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${spring.cloud.client.ipAddress}:${server.port}
+        health-check-path: /health
+        health-check-interval: 10s
+
+server:
+  port: 8502
+
+management:
+  security:
+    enabled: false

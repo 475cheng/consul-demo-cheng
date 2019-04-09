@@ -3,10 +3,11 @@
 # consul 
 每个节点都需要运行agent，他有两种运行模式server和client。每个数据中心官方建议需要3或5个server节点以保证数据安全，同时保证server-leader的选举能够正确的进行。
 下面的前3条命令构建了 consul集群，第四条命令表示向consul集群中注册一个client节点
-consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0  
+consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0  
 consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s2 -bind=192.168.87.208 -ui -client 0.0.0.0 -join 172.20.4.98
 consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s3 -bind=172.20.12.7 -ui -client 0.0.0.0 -join 172.20.4.98
 consul agent -data-dir /tmp/consul -node=c1 -bind=192.168.87.208 -client=192.168.87.208 -join 172.20.12.7
+单节点启动：consul agent -dev -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0
 -node：节点的名称  
 -bind：绑定的一个地址，用于节点之间通信的地址，可以是内外网，必须是可以访问到的地址  
 -server：这个就是表示这个节点是个SERVER  

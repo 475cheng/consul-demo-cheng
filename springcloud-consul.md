@@ -7,10 +7,13 @@ consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -node=s1 -bind=17
 consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s2 -bind=192.168.87.208 -ui -client 0.0.0.0 -join 172.20.4.98
 consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s3 -bind=172.20.12.7 -ui -client 0.0.0.0 -join 172.20.4.98
 consul agent -data-dir /tmp/consul -node=c1 -bind=192.168.87.208 -client=192.168.87.208 -join 172.20.12.7
-单节点启动：consul agent -dev -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0
+单节点启动：consul agent -dev  -config-dir=/data/consul -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0
+            consul agent -server -data-dir /data/service/consul -bootstrap-expect 1 -advertise 172.17.7.166  -client 0.0.0.0 -ui
+            export PROMDASH_PATH_PREFIX="/consull"
 -node：节点的名称  
 -bind：绑定的一个地址，用于节点之间通信的地址，可以是内外网，必须是可以访问到的地址  
 -server：这个就是表示这个节点是个SERVER  
+-config-dir: 配置文件目录包括acl，tls等等
 -bootstrap-expect：这个就是表示期望提供的SERVER节点数目，数目一达到，它就会被激活，然后就是内部选举LEADER了
 -data-dir：表示持久化服务注册信息，集群信息的目录
 -join：这个表示启动的时候，要加入到哪个集群内，这里就是说要加入到节点1的集群  
@@ -21,7 +24,15 @@ consul agent -data-dir /tmp/consul -node=c1 -bind=192.168.87.208 -client=192.168
 1.只有2个server的时候，一个挂掉，不会选举出新的leader。建议3或5台，3台中如果leader挂掉，会在另外2台中重新选举leader
 2.使用 -bootstrap 可以直接启动为leader，这和-bootstrap-expect 是有区别的
 3.节点数据直接没有同步 （与Eureka不同，它不会数据同步，可以通过每台linux启动一个consul-client节点，然后再启动一个服务注册到本机节点）
-
+4.Consul使用访问控制列表（ACL）来保护UI，API，CLI，服务通信和代理通信
+     命令：consul acl bootstrap 生成token
+      "acl": {
+         "enabled": true,
+         "default_policy": "deny",
+         "down_policy": "extend-cache"
+       },
+5.备份数据命令：consul snapshot save backup.snap
+  还原数据命令：consul snapshot restore backup.snap
 # spirngcloud引入consul
 以springboot为1.5.19为例
 1. maven配置

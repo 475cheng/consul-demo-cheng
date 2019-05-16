@@ -8,7 +8,7 @@ consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s2 -bind=19
 consul agent -server -bootstrap-expect 3 -data-dir /tmp/consul -node=s3 -bind=172.20.12.7 -ui -client 0.0.0.0 -join 172.20.4.98
 consul agent -data-dir /tmp/consul -node=c1 -bind=192.168.87.208 -client=192.168.87.208 -join 172.20.12.7
 单节点启动：consul agent -dev  -config-dir=/data/consul -data-dir /tmp/consul -node=s1 -bind=172.20.4.98 -ui -client 0.0.0.0
-            consul agent -server -data-dir /data/service/consul -bootstrap-expect 1 -advertise 172.17.7.166  -client 0.0.0.0 -ui
+            consul agent -server -data-dir /data/service/consul -bootstrap-expect 1 -advertise 172.20.4.98  -client 0.0.0.0 -ui
             export PROMDASH_PATH_PREFIX="/consull"
 -node：节点的名称  
 -bind：绑定的一个地址，用于节点之间通信的地址，可以是内外网，必须是可以访问到的地址  
